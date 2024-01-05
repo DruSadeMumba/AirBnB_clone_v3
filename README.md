@@ -163,4 +163,4 @@ Dru Mumba - [Github](https://github.com/DruSadeMumba) \
 Celse Rugira - [Github](https://github.com/Celse13)
 
 ## License
-Public Domain. No copy write protection. 
+Licensed under [MIT License](LICENSE). 
