@@ -27,7 +27,7 @@ def resource_not_found(error):
 @app.errorhandler(400)
 def bad_request(error):
     """Handling the bad request."""
-    message = error.get_description()
+    message = error.description
     return {"error": message}, 400
 
 
@@ -38,4 +38,6 @@ def close(session=None):
 
 
 if __name__ == "__main__":
+    get_host = os.getenv("HBNB_API_HOST", "0.0.0.0")
+    get_port = int(os.getenv("HBNB_API_PORT", 5000))
     app.run(host=get_host, port=(get_port), threaded=True)
