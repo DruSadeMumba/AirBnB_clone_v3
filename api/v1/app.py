@@ -13,7 +13,7 @@ app = Flask(__name__)
 get_host = os.getenv("HBNB_API_HOST", "0.0.0.0")
 get_port = int(os.getenv("HBNB_API_PORT", 5000))
 
-CORS(app, resources={'/*': {'origins': get_host}})
+CORS(app, resources={r"/*": {"origins": get_host}})
 
 app.register_blueprint(app_views, url_prefix="/api/v1")
 
@@ -40,4 +40,4 @@ def close(session=None):
 if __name__ == "__main__":
     get_host = os.getenv("HBNB_API_HOST", "0.0.0.0")
     get_port = int(os.getenv("HBNB_API_PORT", 5000))
-    app.run(host=get_host, port=(get_port), threaded=True)
+    app.run(host=get_host, port=get_port, threaded=True)
