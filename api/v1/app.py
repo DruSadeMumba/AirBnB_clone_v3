@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """Entry point for the routing to return API Status."""
 import os
 from flask import Flask
@@ -11,7 +11,7 @@ app.register_blueprint(app_views)
 
 @app.teardown_appcontext
 def close(arg=None):
-    """Close session when app conten torn down."""
+    """Close session when app content torn down."""
     storage.close()
 
 
