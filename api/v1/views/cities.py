@@ -11,13 +11,17 @@ from models.state import State
                  strict_slashes=False)
 def list_all_cities(state_id):
     """List all cities in a state"""
+    list_cities = []
     state = storage.get(State, state_id)
     if not state:
         abort(404)
-    return jsonify([city.to_dict() for city in state.cities])
+    for city in state.cities:
+        list_cities.append(city.to_dict())
+
+    return jsonify(list_cities)
 
 
-@app_views.route('/cities/<city_id>/', methods=['GET'], strict_slashes=False)
+@app_views.route('/cities/<city_id>', methods=['GET'], strict_slashes=False)
 def retrieve_a_city(city_id):
     """Retrieve a city"""
     city = storage.get(City, city_id)
