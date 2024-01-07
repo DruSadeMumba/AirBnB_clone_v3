@@ -42,9 +42,7 @@ def create_a_city(state_id):
     """Create a city in a state"""
     state = storage.get(State, state_id)
     data = request.get_json()
-    if state:
-        return jsonify(state.to_dict())
-    else:
+    if not state:
         abort(404)
     if not data:
         return jsonify({"error": "Not a JSON"}), 400
