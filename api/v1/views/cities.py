@@ -12,9 +12,7 @@ from models.state import State
 def list_all_cities(state_id):
     """List all cities in a state"""
     state = storage.get(State, state_id)
-    if state:
-        return jsonify(state.to_dict())
-    else:
+    if not state:
         abort(404)
     return jsonify([city.to_dict() for city in state.cities])
 
