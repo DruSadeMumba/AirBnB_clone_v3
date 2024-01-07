@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Entry point for the routing to return API Status."""
 import os
-from flask import Flask
+from flask import Flask, jsonify
 from api.v1.views import app_views
 from models import storage
 
@@ -13,6 +13,12 @@ app.register_blueprint(app_views)
 def close(arg=None):
     """Close session when app content torn down."""
     storage.close()
+
+
+@app.errorhandler(404)
+def not_found(err):
+    """404 page"""
+    return jsonify({"error": "Not found"}), 404
 
 
 if __name__ == "__main__":
