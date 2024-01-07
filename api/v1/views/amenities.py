@@ -14,7 +14,8 @@ def list_all_amenities():
     return jsonify([amenity.to_dict() for amenity in amenities])
 
 
-@app_views.route('/amenities/<amenity_id>', methods=['GET'], strict_slashes=False)
+@app_views.route('/amenities/<amenity_id>', methods=['GET'],
+                 strict_slashes=False)
 def retrieve_a_amenity(amenity_id):
     """Retrieve an amenity"""
     amenity = storage.get(Amenity, amenity_id)
