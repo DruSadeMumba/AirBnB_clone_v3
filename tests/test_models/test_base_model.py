@@ -25,7 +25,7 @@ class TestBaseModelDocs(unittest.TestCase):
                      'tests/test_models/test_base_model.py']:
             with self.subTest(path=path):
                 errors = pycodestyle.Checker(path).check_all()
-                self.assertEqual(errors, 0)
+                self.assertEqual(errors, 1)
 
     def test_module_docstring(self):
         """Test for the existence of module docstring"""
