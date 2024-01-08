@@ -106,11 +106,8 @@ def search():
 
     if cities:
         city = [storage.get(City, city_id) for city_id in cities]
-        for cty in city:
-            if cty:
-                for place in cty.list_places:
-                    if place not in list_places:
-                        list_places.append(place)
+        list_places.extend(place for city in city if city for place in city.places
+                           if place not in list_places)
 
     if amenities:
         if not list_places:
@@ -121,8 +118,8 @@ def search():
                                for am in amenities_obj])]
 
     places = []
-    for plac in list_places:
-        d = plac.to_dict()
+    for p in list_places:
+        d = p.to_dict()
         d.pop('amenities', None)
         places.append(d)
 
