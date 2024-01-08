@@ -3,8 +3,10 @@
 from flask import jsonify, abort, request
 from api.v1.views import app_views
 from models import storage
+from models.amenity import Amenity
 from models.city import City
 from models.place import Place
+from models.state import State
 from models.user import User
 
 
@@ -77,3 +79,22 @@ def update_a_place(place_id):
             setattr(place, key, val)
     storage.save()
     return jsonify(place.to_dict()), 200
+
+
+@app_views.route('/places_search', methods=['POST'], strict_slashes=False)
+def search():
+    data = request.get_json()
+    states = storage.get(State, data.get('states', []))
+    cities = storage.get(City, data.get('cities', []))
+    amenities = storage.get(Amenity, data.get('amenities', []))
+    places = storage.all(Place).values()
+    if not data:
+        return jsonify({"error": "Not a JSON"}), 400
+    if states:
+        places = [place for place in places if place.city.state in states]
+    if cities:
+        places += [place for place in places if place.city in cities]
+    if amenities:
+        places += [place for place in places if all(amenity in place.amenities
+                                                    for amenity in amenities)]
+    return jsonify([place.to_dict() for place in places])
