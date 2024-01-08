@@ -121,5 +121,7 @@ def search():
         list_places = [place for place in list_places
                        if all(amen in place.amenities for amen in amenity)]
 
-    return jsonify([place.to_dict().pop('amenities', None)
-                    for place in list_places])
+    places = [p.to_dict() for p in list_places]
+    for place in places:
+        place.pop('amenities', None)
+    return jsonify(places)
