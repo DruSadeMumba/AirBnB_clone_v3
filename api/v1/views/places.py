@@ -95,9 +95,10 @@ def search():
                         for place in storage.all(Place).values()])
     places = []
     if states:
-        places.extend(place for state_id in states
-                      for state in storage.get(State, state_id).cities if state
-                      for place in state.places)
+        state = [storage.get(State, state_id) for state_id in states]
+        places.extend(place for state in map(lambda x: x if x else None, state)
+                      for city in state.cities if state and city
+                      for place in city.places)
     if cities:
         city = [storage.get(City, city_id) for city_id in cities]
         places.extend(place for city in city if city for place in city.places
