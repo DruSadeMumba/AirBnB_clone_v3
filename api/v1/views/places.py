@@ -94,37 +94,33 @@ def search():
         amenities = data.get('amenities', None)
 
     if not data or not any([states, cities, amenities]):
-        places = [place.to_dict() for place in storage.all(Place).values()]
-        return jsonify(places)
+        return jsonify([place.to_dict() for place in storage.all(Place).values()])
 
-    list_places = []
+    placess = []
     if states:
-        states_obj = [storage.get(State, s_id) for s_id in states]
-        for state in states_obj:
-            if state:
-                for city in state.cities:
-                    if city:
-                        for place in city.places:
-                            list_places.append(place)
+        state_objects = [storage.get(State, state_id) for state_id in states]
+        placess.extend(place for state in state_objects if state
+                       for city in state.cities if city
+                       for place in city.places)
 
     if cities:
         city_obj = [storage.get(City, c_id) for c_id in cities]
         for city in city_obj:
             if city:
                 for place in city.places:
-                    if place not in list_places:
-                        list_places.append(place)
+                    if place not in placess:
+                        placess.append(place)
 
     if amenities:
-        if not list_places:
-            list_places = storage.all(Place).values()
+        if not placess:
+            placess = storage.all(Place).values()
         amenities_obj = [storage.get(Amenity, a_id) for a_id in amenities]
-        list_places = [place for place in list_places
-                       if all([am in place.amenities
-                               for am in amenities_obj])]
+        placess = [place for place in placess
+                   if all([am in place.amenities
+                           for am in amenities_obj])]
 
     places = []
-    for p in list_places:
+    for p in placess:
         d = p.to_dict()
         d.pop('amenities', None)
         places.append(d)
