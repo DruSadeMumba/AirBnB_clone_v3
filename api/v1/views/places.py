@@ -83,8 +83,9 @@ def update_a_place(place_id):
 
 @app_views.route('/places_search', methods=['POST'], strict_slashes=False)
 def search():
+    """Retrieves all places depending on the JSON in the body of the request"""
     data = request.get_json()
-    if data is None:
+    if not data:
         abort(400, description="Not a JSON")
     states = data.get('states', [])
     cities = data.get('cities', [])
