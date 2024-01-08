@@ -99,14 +99,10 @@ def search():
 
     list_places = []
     if states:
-        states_obj = [storage.get(State, s_id) for s_id in states]
-        for state in states_obj:
-            if state:
-                for city in state.cities:
-                    if city:
-                        for place in city.places:
-                            list_places.append(place)
-
+        state = [storage.get(State, state_id) for state_id in states]
+        list_places.extend([place for state in state if state
+                            for city in state.cities if city
+                            for place in city.places])
     if cities:
         city = [storage.get(City, city_id) for city_id in cities]
         list_places.extend(place for city in city if city
